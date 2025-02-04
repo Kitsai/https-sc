@@ -3,6 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Sum Two Numbers</title>
+    <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+    <script>
+      var bridge = null;
+
+      new QWebChannel(qt.webChannelTransport, function(channel) {
+        bridge = channel.objects.bridge;
+      });
+
+      function calculateSum() {
+            const num1 = document.getElementById('number1').value;
+            const num2 = document.getElementById('number2').value;
+            if (bridge) {
+                console.log(num1, num2)
+                bridge.sendData(num1, num2);
+            } else {
+                alert("Bridge not initialized.");
+            }
+            return false; // Prevent form submission
+        }
+
+        function displayResult(result) {
+            document.getElementById('result').textContent = `Sum: ${result}`;
+        }
+    </script>
 </head>
 <body>
     <h1>Simple Sum Calculator</h1>
