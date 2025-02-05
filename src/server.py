@@ -52,14 +52,17 @@ class CustomHandler(BaseHTTPRequestHandler):
         )
 
 
-# Server setup
-address = ("localhost", 4443)
-server = HTTPServer(address, CustomHandler)
+class HttpsServer(HTTPServer):
+    address = ("localhost", 4443)
 
-context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-context.load_cert_chain(certfile="./cert.pem", keyfile="./key.pem")
+    def __init__(self) -> None:
+        super().__init__(self.address, CustomHandler)
+        self.context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        self.context.load_cert_chain(certfile="./cert.pem", keyfile="./key.pem")
+        self.socket = self.context.wrap_socket(self.socket, True)
 
-server.socket = context.wrap_socket(server.socket, True)
 
-print(f"Https Server rodando em https://{address[0]}:{address[1]}")
-server.serve_forever()
+if __name__ == "__main__":
+    server = HttpsServer()
+    print(f"Https Server rodando em https://{server.address[0]}:{server.address[1]}")
+    server.serve_forever()
