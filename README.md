@@ -1,3 +1,4 @@
+# Rodando o código
 Para rodar ambos os servidor e o cliente é recomendado utilizar um ambiente virual python. Para fazer isso é necessário ter o virtualenv.
 Com ele instalado é possível rodar
 ```bash
